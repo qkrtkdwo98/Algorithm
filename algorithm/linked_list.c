@@ -27,6 +27,10 @@ int add_last(Node* head, Node* tail, const int data) {
 		last = last->link;
 
 	Node* newNode = init();
+	if (last == NULL || newNode == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	newNode->data = data;
 	newNode->link = tail;
 	last->link = newNode;
@@ -36,6 +40,10 @@ int add_last(Node* head, Node* tail, const int data) {
 
 int add_first(Node* head, Node* tail, const int data) {
 	Node* newNode = init();
+	if (newNode == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	newNode->link = head->link;
 	newNode->data = data;
 	head->link = newNode;
@@ -45,6 +53,10 @@ int add_first(Node* head, Node* tail, const int data) {
 int insert(Node* head, Node* tail, const int data, const int pos) {
 	Node* cur = head;
 	Node* newNode = init();
+	if (cur == NULL || newNode == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	newNode->data = data;
 	if (pos == 1) {
 		newNode->link = head->link;
@@ -68,6 +80,10 @@ int insert(Node* head, Node* tail, const int data, const int pos) {
 int delete_node_pos(Node* head, Node* tail, const int pos) {
 	Node* cur = head;
 	Node* del = head;
+	if (cur == NULL || del == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	int cnt = 0;
 	cnt = pos;
 	while (cnt != 0) {
@@ -78,28 +94,36 @@ int delete_node_pos(Node* head, Node* tail, const int pos) {
 		cnt--;
 	}
 	cur->link = del->link;
-	free(del);
 	return 0;
 }
 
 int search_data(Node* head, Node* tail, const int configdata) {
-	Node* cur = head;
+	Node* cur = head->link;
+	if (cur == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	int i = 0;
 	int cnt = 0;
 	while (cur != tail) {
 		if (cur->data == configdata) {
 			printf("À§Ä¡ : %d ¹øÂ°\n", i);
 			cnt++;
+
 		}
 		cur = cur->link;
 		i++;
 	}
-	printf("°¹¼ö:%d\n", cnt);
-	return 0;
+	//printf("°¹¼ö:%d\n", cnt);
+	return i;
 }
 
 int search_pos(Node* head, Node* tail, const int pos) {
 	Node* cur = head;
+	if (cur == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	int i = 0;
 	while (cur != tail) {
 		if (i == pos) {
@@ -114,6 +138,10 @@ int search_pos(Node* head, Node* tail, const int pos) {
 
 int print_list(Node* head, Node* tail) {
 	Node* prt = head->link;
+	if (prt == NULL) {
+		printf("Failed to allocate memory...");
+		return -1;
+	}
 	int i = 0;
 	while (prt != tail) {
 		printf("%d¹øÂ°:%d\n", i + 1, prt->data);
@@ -121,7 +149,7 @@ int print_list(Node* head, Node* tail) {
 		i++;
 	}
 
-	return 0;
+	return i;
 }
 
 int exit_node(Node** head, Node** tail) {
