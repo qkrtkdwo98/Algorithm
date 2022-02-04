@@ -5,10 +5,10 @@
 
 int pop(Node* head, Node* tail) {
 	delete_node_pos(head, tail, 1);
-	
+
 	return 0;
 }
-int push(Node* head,Node* tail, const int data) {
+int push(Node* head, Node* tail, const int data) {
 	add_first(head, tail, data);
 
 	return 0;
