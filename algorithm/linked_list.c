@@ -10,7 +10,7 @@ typedef struct linked_list
 
 Node* init(void)//void 표기해야함.c언어에서는 표기필요, c++은 표기안함
 {
-	Node* node = malloc(sizeof(Node));//옛날에는 형변환 필요(Node*), 요즘은 필요없음
+	Node* node = calloc(1,sizeof(Node));//옛날에는 형변환 필요(Node*), 요즘은 필요없음
 	if (node == NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
