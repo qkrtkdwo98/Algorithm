@@ -1,13 +1,13 @@
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <memory.h>
 
-typedef struct linked_list
+#include "linked_list.h"
+/*struct linked_list
 {
 	int data;
 	struct linked_list* link;
-} Node;
-
+};*/
 Node* init(void)//void 표기해야함.c언어에서는 표기필요, c++은 표기안함
 {
 	Node* node = calloc(1,sizeof(Node));//옛날에는 형변환 필요(Node*), 요즘은 필요없음
@@ -20,10 +20,10 @@ Node* init(void)//void 표기해야함.c언어에서는 표기필요, c++은 표기안함
 	return node;
 }
 //inline을 사용할 시 헤더에 함수를 통째로 선언해야함.
-int add_last(Node* head, Node* tail, const int data) {
+int add_last(Node* head, const int data) {
 	Node* last = head;
 
-	while (last->link != tail)
+	while (last->link != NULL)
 		last = last->link;
 
 	Node* newNode = init();
@@ -32,25 +32,28 @@ int add_last(Node* head, Node* tail, const int data) {
 		return -1;
 	}
 	newNode->data = data;
-	newNode->link = tail;
+	newNode->link = NULL;
 	last->link = newNode;
 	printf("%p\n", newNode);
 	return 0;
 }
 
-int add_first(Node* head, Node* tail, const int data) {
+int add_first(Node* head, const int data) {
 	Node* newNode = init();
 	if (newNode == NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
 	}
-	newNode->link = head->link;
 	newNode->data = data;
+	newNode->link = head->link;
+	
+	
 	head->link = newNode;
+	
 	return 0;
 }
 
-int insert(Node* head, Node* tail, const int data, const int pos) {
+int insert(Node* head, const int data, const int pos) {
 	Node* cur = head;
 	Node* newNode = init();
 	if (cur == NULL || newNode == NULL) {
@@ -77,7 +80,7 @@ int insert(Node* head, Node* tail, const int data, const int pos) {
 	}
 	return 0;
 }
-int delete_node_pos(Node* head, Node* tail, const int pos) {
+int delete_node_pos(Node* head, const int pos) {
 	Node* cur = head;
 	Node* del = head;
 	if (cur == NULL || del == NULL) {
@@ -97,16 +100,16 @@ int delete_node_pos(Node* head, Node* tail, const int pos) {
 	return 0;
 }
 
-int search_data(Node* head, Node* tail, const int configdata) {
+int search_data(Node* head, const int configdata) {
 	Node* cur = head->link;
 	if (cur == NULL) {
-		printf("Failed to allocate memory...");
-		return -1;
+		//printf("Failed to allocate memory...");
+		return 0;
 	}
 	int i = 0;
 	int cnt = 0;
-	while (cur != tail) {
-		if (cur->data == configdata) {
+	while (cur != NULL) {
+		if ((void*)cur->data == (void*)configdata) {
 			printf("위치 : %d 번째\n", i);
 			cnt++;
 
@@ -118,14 +121,14 @@ int search_data(Node* head, Node* tail, const int configdata) {
 	return i;
 }
 
-int search_pos(Node* head, Node* tail, const int pos) {
+int search_pos(Node* head, const int pos) {
 	Node* cur = head;
 	if (cur == NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
 	}
 	int i = 0;
-	while (cur != tail) {
+	while (cur != NULL) {
 		if (i == pos) {
 			printf("%d\n", cur->data);
 			break;
@@ -136,14 +139,14 @@ int search_pos(Node* head, Node* tail, const int pos) {
 	return 0;
 }
 
-int print_list(Node* head, Node* tail) {
+int print_list(Node* head) {
 	Node* prt = head->link;
 	if (prt == NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
 	}
 	int i = 0;
-	while (prt != tail) {
+	while (prt != NULL) {
 		printf("%d번째:%d\n", i + 1, prt->data);
 		prt = prt->link;
 		i++;
@@ -152,19 +155,18 @@ int print_list(Node* head, Node* tail) {
 	return i;
 }
 
-int exit_node(Node** head, Node** tail) {
-	if (*head == NULL || *tail == NULL)
+int exit_node(Node** head) {
+	if (*head == NULL )
 		return -1;
 
 	Node* cur = NULL;
-	while (*head != *tail) {
+	while (*head != NULL) {
 		cur = *head;
 		*head = (*head)->link;
 		//printf("%p\n", cur);
 		free(cur);
 		cur = NULL;
 	}
-	free(*tail);
 	return 0;
 }
 
