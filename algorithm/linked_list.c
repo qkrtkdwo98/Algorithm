@@ -13,7 +13,7 @@ Node* init(void)//void 표기해야함.c언어에서는 표기필요, c++은 표기안함
 	Node* node = calloc(1,sizeof(Node));//옛날에는 형변환 필요(Node*), 요즘은 필요없음
 	if (node == NULL) {
 		printf("Failed to allocate memory...");
-		return -1;
+		return NULL;
 	}
 	//memset(node, 0, sizeof(Node)); //확장성을 고려하여 설계
 	//malloc + memset = calloc 속도는 앞이 조금 더 빠름
@@ -40,7 +40,7 @@ int add_last(Node* head, const int data) {
 
 int add_first(Node* head, const int data) {
 	Node* newNode = init();
-	if (newNode == NULL) {
+	if (newNode == NULL||head==NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
 	}
@@ -87,6 +87,10 @@ int delete_node_pos(Node* head, const int pos) {
 		printf("Failed to allocate memory...");
 		return -1;
 	}
+	if (cur->link == NULL) {
+		printf("stack is empty\n");
+		return -1;
+	}
 	int cnt = 0;
 	cnt = pos;
 	while (cnt != 0) {
@@ -109,7 +113,7 @@ int search_data(Node* head, const int configdata) {
 	int i = 0;
 	int cnt = 0;
 	while (cur != NULL) {
-		if ((void*)cur->data == (void*)configdata) {
+		if (cur->data == configdata) {
 			printf("위치 : %d 번째\n", i);
 			cnt++;
 
@@ -121,10 +125,31 @@ int search_data(Node* head, const int configdata) {
 	return i;
 }
 
+int size(Node* head) {
+	Node* cur = head->link;
+	if (cur == NULL) {
+		//printf("Failed to allocate memory...");
+		return 0;
+	}
+	int i = 0;
+	
+	while (cur != NULL) {
+		
+		cur = cur->link;
+		i++;
+	}
+	
+	return i;
+}
+
 int search_pos(Node* head, const int pos) {
 	Node* cur = head;
 	if (cur == NULL) {
 		printf("Failed to allocate memory...");
+		return -1;
+	}
+	if (cur->link == NULL) {
+		printf("stack is empty\n");
 		return -1;
 	}
 	int i = 0;
@@ -139,22 +164,20 @@ int search_pos(Node* head, const int pos) {
 	return 0;
 }
 
-int print_list(Node* head) {
+int print_list(Node* head,int size) {
 	Node* prt = head->link;
 	if (prt == NULL) {
 		printf("Failed to allocate memory...");
 		return -1;
-	}
+	}	
 	int i = 0;
-	while (prt != NULL) {
+	while (size--) {
 		printf("%d번째:%d\n", i + 1, prt->data);
 		prt = prt->link;
-		i++;
-	}
-
-	return i;
+		i++;		
+	}	
+	return 0;
 }
-
 int exit_node(Node** head) {
 	if (*head == NULL )
 		return -1;
