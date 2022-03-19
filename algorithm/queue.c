@@ -68,12 +68,17 @@ static int _print_queue(queue_t* q_head,queue_t* q_tail) {
 	return 0;
 }
 
-static int _exit_node_queue(queue_t** q_head) {
-	if (q_head == NULL || *q_head == NULL)
+static int _exit_node_queue(queue_t** q_head,queue_t** q_tail) {
+	if (q_head == NULL || *q_head == NULL||q_tail==NULL||*q_tail==NULL)
 		return -1;
 	//linked_list 해제코드로 하도록 하자
+	
+	
+	
 	exit_node(*q_head);
 	free(*q_head);
+	free(*q_tail);
+	
 	return 0;
 }
 int main(void) {
@@ -96,8 +101,9 @@ int main(void) {
 	_q_size(q_head);
 	_print_queue(q_head, q_tail);
 	printf("%d\n", _q_empty(q_head,q_tail));
+	//printf("%p, %p\n", q_head, q_tail);
+	_exit_node_queue(&q_head,&q_tail);
 	
-	_exit_node_queue(&q_head);
 
 	return 0;
 }
